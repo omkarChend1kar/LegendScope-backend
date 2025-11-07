@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: legendscope-backend:latest
+    container_name: legendscope-web
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENVIRONMENT=${APP_ENVIRONMENT:-production}
+      - APP_DEBUG=${APP_DEBUG:-false}
+      - APP_API_PREFIX=${APP_API_PREFIX:-/api}
+      - APP_PROJECT_NAME=${APP_PROJECT_NAME:-LegendScope Backend}
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - legendscope-network
+
+  # Optional: Add nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: legendscope-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - web
+    networks:
+      - legendscope-network
+    profiles:
+      - with-nginx
+
+networks:
+  legendscope-network:
+    driver: bridge
