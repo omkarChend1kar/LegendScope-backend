@@ -35,6 +35,26 @@ class Settings(BaseSettings):
         "https://giac4bui2zsfeiatzcfhmtoota0jndfh.lambda-url.eu-north-1.on.aws/"
     )
     
+    # Lambda function URL for fetching last 20 matches
+    lambda_last_matches_url: str = (
+        "https://ltk3ituqse7f5l7yopogrrilgy0vxpqk.lambda-url.eu-north-1.on.aws/"
+    )
+    
+    # Lambda function URL for storing matches to DynamoDB
+    lambda_store_matches_url: str = (
+        "https://idwrw76jh3undgiwmo2rvnk6240onvzv.lambda-url.eu-north-1.on.aws/"
+    )
+    
+    # Lambda function URL for updating player profile columns
+    lambda_update_profile_url: str = (
+        "https://h7qr3cljgzkh2k4j3kyuvkwz4e0sjsgm.lambda-url.eu-north-1.on.aws/"
+    )
+    
+    # Lambda function URL for fetching matches from DynamoDB
+    lambda_get_matches_url: str = (
+        "https://4x454duo26y5k7lkblp2sfvgq40xrcpn.lambda-url.eu-north-1.on.aws/"
+    )
+    
     # Riot API configuration (for future direct integration)
     riot_api_key: str = ""  # Set via APP_RIOT_API_KEY environment variable
     riot_api_base_url: str = "https://americas.api.riotgames.com"

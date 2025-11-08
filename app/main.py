@@ -2,6 +2,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router as api_router
 from app.core.config import get_settings
@@ -22,6 +23,15 @@ def create_application() -> FastAPI:
         debug=settings.debug,
         version="0.1.0",
         lifespan=lifespan,
+    )
+
+    # Add CORS middleware to allow frontend requests
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r"http://localhost:\d+",  # Allow any localhost port
+        allow_credentials=True,
+        allow_methods=["*"],  # Allow all HTTP methods
+        allow_headers=["*"],  # Allow all headers
     )
 
     app.include_router(api_router, prefix=settings.api_prefix)
