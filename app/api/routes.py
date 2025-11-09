@@ -6,6 +6,7 @@ from app.schemas import (
     Item,
     ItemCreate,
     NarrativeSummaryResponse,
+    PlaystyleSummaryResponse,
     ProfileRequest,
     ProfileResponse,
     RiskProfileResponse,
@@ -14,7 +15,13 @@ from app.schemas import (
     StoreMatchesResponse,
     SummaryCardsResponse,
 )
-from app.services import battle_summary_service, player_matches_service, profile_service, store
+from app.services import (
+    battle_summary_service,
+    player_matches_service,
+    profile_service,
+    signature_playstyle_analyzer,
+    store,
+)
 
 router = APIRouter()
 
@@ -252,4 +259,58 @@ async def create_players_all_matches(request: StoreMatchesRequest) -> StoreMatch
         StoreMatchesResponse with status "stored" and success message
     """
     return await player_matches_service.store_all_matches(request.puuid, request.region)
+
+
+@router.get(
+    "/battles/{player_id}/signature-playstyle/summary",
+    response_model=PlaystyleSummaryResponse,
+    tags=["Signature Playstyle"],
+)
+async def get_signature_playstyle_summary(player_id: str) -> PlaystyleSummaryResponse:
+    """
+    Get comprehensive signature playstyle analysis for a player.
+    
+    Analyzes the player's last 20 matches to generate a detailed playstyle profile
+    including six axes (aggression, survivability, skirmish bias, objective impact,
+    vision discipline, and utility), efficiency metrics, tempo analysis across game
+    phases, consistency metrics, role distribution, and champion comfort picks.
+    
+    The analysis provides:
+    - **Playstyle Axes**: Six dimensional analysis with scores 0-100
+    - **Efficiency**: KDA, kill participation, damage share, GPM, vision
+    - **Tempo**: Performance breakdown by early/mid/late game phases
+    - **Consistency**: Coefficient of variation across key metrics
+    - **Role & Champions**: Role distribution and top comfort picks
+    - **Insights**: Actionable recommendations based on the analysis
+    
+    Note: Returns null data with status if last_matches status is not "READY".
+    Valid statuses: NOT_STARTED, FETCHING, READY, NO_MATCHES, FAILED.
+    
+    Args:
+        player_id: Player's PUUID
+        
+    Returns:
+        PlaystyleSummaryResponse with status and comprehensive playstyle data
+        
+    Example Response:
+        {
+            "status": "READY",
+            "data": {
+                "summary": {
+                    "primaryRole": "JUNGLE",
+                    "playstyleLabel": "Aggressive Striker",
+                    "oneLiner": "High aggression playstyle (71% KP, 23% DMG share)",
+                    "record": {"games": 20, "wins": 12, "losses": 8},
+                    "windowLabel": "Last 20 battles"
+                },
+                "axes": { ... },
+                "efficiency": { ... },
+                "tempo": { ... },
+                "consistency": { ... },
+                "roleAndChamps": { ... },
+                "insights": [ ... ]
+            }
+        }
+    """
+    return await signature_playstyle_analyzer.analyze(player_id)
 

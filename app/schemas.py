@@ -200,3 +200,228 @@ class NarrativeSummaryResponse(BaseModel):
     class Config:
         populate_by_name = True
 
+
+# ============================================================================
+# Signature Playstyle Analysis Models
+# ============================================================================
+
+class AxisMetricModel(BaseModel):
+    """Individual metric within a playstyle axis."""
+    id: str = Field(description="Unique identifier for the metric")
+    label: str = Field(description="Display label")
+    unit: str | None = Field(default=None, description="Unit of measurement")
+    value: float = Field(description="Raw metric value")
+    display_value: str = Field(alias="displayValue", description="Formatted display value")
+    direction: str = Field(description="positive, negative, or neutral")
+    percent: int = Field(description="Percentile score 0-100")
+    
+    class Config:
+        populate_by_name = True
+
+
+class PlaystyleAxisModel(BaseModel):
+    """A single playstyle axis with score and metrics."""
+    key: str = Field(description="Axis identifier")
+    label: str = Field(description="Display label")
+    score: int = Field(description="Overall axis score 0-100")
+    score_label: str = Field(alias="scoreLabel", description="Score interpretation label")
+    metrics: list[AxisMetricModel] = Field(description="Individual metrics")
+    evidence: dict[str, float] = Field(description="Raw evidence values")
+    
+    class Config:
+        populate_by_name = True
+
+
+class PlaystyleAxesModel(BaseModel):
+    """All six playstyle axes."""
+    aggression: PlaystyleAxisModel
+    survivability: PlaystyleAxisModel
+    skirmish_bias: PlaystyleAxisModel = Field(alias="skirmishBias")
+    objective_impact: PlaystyleAxisModel = Field(alias="objectiveImpact")
+    vision_discipline: PlaystyleAxisModel = Field(alias="visionDiscipline")
+    utility: PlaystyleAxisModel
+    
+    class Config:
+        populate_by_name = True
+
+
+class EfficiencyModel(BaseModel):
+    """Overall efficiency metrics."""
+    kda: float = Field(description="Kill/Death/Assist ratio")
+    kp: float = Field(description="Kill participation 0-1")
+    damage_share: float = Field(alias="damageShare", description="Team damage share 0-1")
+    gpm: int = Field(description="Gold per minute")
+    vision_per_min: float = Field(alias="visionPerMin", description="Vision score per minute")
+    
+    class Config:
+        populate_by_name = True
+
+
+class TempoPhaseMetricModel(BaseModel):
+    """Individual metric within a tempo phase."""
+    id: str = Field(description="Metric identifier")
+    label: str = Field(description="Display label")
+    unit: str | None = Field(default=None, description="Unit of measurement")
+    value: float = Field(description="Raw value")
+    formatted_value: str = Field(alias="formattedValue", description="Formatted display")
+    percent: int = Field(description="Relative strength 0-100")
+    direction: str = Field(description="positive or negative")
+    
+    class Config:
+        populate_by_name = True
+
+
+class TempoPhaseModel(BaseModel):
+    """Performance metrics for a game phase."""
+    key: str = Field(description="Phase key: early, mid, or late")
+    label: str = Field(description="Phase display label")
+    role_label: str = Field(alias="roleLabel", description="Role interpretation")
+    kills_per_10m: float = Field(alias="killsPer10m")
+    deaths_per_10m: float = Field(alias="deathsPer10m")
+    dpm: float = Field(description="Damage per minute")
+    cs_per_min: float = Field(alias="csPerMin")
+    kp: float = Field(description="Kill participation")
+    metrics: list[TempoPhaseMetricModel] = Field(description="Phase metrics")
+    
+    class Config:
+        populate_by_name = True
+
+
+class TempoHighlightModel(BaseModel):
+    """A highlighted tempo insight."""
+    id: str = Field(description="Highlight identifier")
+    title: str = Field(description="Highlight title")
+    phase_label: str = Field(alias="phaseLabel", description="Game phase")
+    metric_label: str = Field(alias="metricLabel", description="Metric display")
+    description: str = Field(description="Insight description")
+    
+    class Config:
+        populate_by_name = True
+
+
+class TempoModel(BaseModel):
+    """Game tempo analysis across phases."""
+    best_phase: str = Field(alias="bestPhase", description="Early, Mid, or Late")
+    by_phase: dict[str, TempoPhaseModel] = Field(alias="byPhase", description="Phase breakdown")
+    highlights: list[TempoHighlightModel] = Field(description="Key tempo insights")
+    
+    class Config:
+        populate_by_name = True
+
+
+class ConsistencyModel(BaseModel):
+    """Consistency analysis across metrics."""
+    kda_cv: float = Field(alias="kdaCV", description="KDA coefficient of variation")
+    dpm_cv: float = Field(alias="dpmCV", description="DPM coefficient of variation")
+    kp_cv: float = Field(alias="kpCV", description="KP coefficient of variation")
+    cs_cv: float = Field(alias="csCV", description="CS coefficient of variation")
+    vision_cv: float = Field(alias="visionCV", description="Vision coefficient of variation")
+    label: str = Field(description="Stable, Streaky, or Volatile")
+    
+    class Config:
+        populate_by_name = True
+
+
+class ChampionComfortAxesDeltaModel(BaseModel):
+    """Axis score deltas for a champion compared to overall."""
+    aggression: int | None = None
+    survivability: int | None = None
+    skirmish_bias: int | None = Field(default=None, alias="skirmishBias")
+    objective_impact: int | None = Field(default=None, alias="objectiveImpact")
+    vision_discipline: int | None = Field(default=None, alias="visionDiscipline")
+    utility: int | None = None
+    
+    class Config:
+        populate_by_name = True
+
+
+class ChampionComfortModel(BaseModel):
+    """Champion comfort pick analysis."""
+    champion: str = Field(description="Champion name")
+    games: int = Field(description="Games played")
+    wr: int = Field(description="Win rate percentage")
+    kda: float = Field(description="Average KDA")
+    axes_delta: ChampionComfortAxesDeltaModel = Field(
+        alias="axesDelta",
+        description="Axis differences from overall playstyle"
+    )
+    
+    class Config:
+        populate_by_name = True
+
+
+class ChampPoolModel(BaseModel):
+    """Champion pool diversity."""
+    unique: int = Field(description="Number of unique champions")
+    entropy: float = Field(description="Pool diversity score 0-1")
+    
+    class Config:
+        populate_by_name = True
+
+
+class RoleAndChampsModel(BaseModel):
+    """Role distribution and champion comfort."""
+    role_mix: dict[str, int] = Field(alias="roleMix", description="Role percentages")
+    champ_pool: ChampPoolModel = Field(alias="champPool", description="Champion pool stats")
+    comfort_picks: list[ChampionComfortModel] = Field(
+        alias="comfortPicks",
+        description="Top comfort champions"
+    )
+    
+    class Config:
+        populate_by_name = True
+
+
+class RecordModel(BaseModel):
+    """Win/loss record."""
+    games: int
+    wins: int
+    losses: int
+    
+    class Config:
+        populate_by_name = True
+
+
+class PlaystyleSummaryHeaderModel(BaseModel):
+    """Summary header with playstyle label and record."""
+    primary_role: str = Field(alias="primaryRole", description="Most played role")
+    playstyle_label: str = Field(alias="playstyleLabel", description="Playstyle archetype")
+    one_liner: str = Field(alias="oneLiner", description="One-line summary")
+    record: RecordModel = Field(description="Win/loss record")
+    window_label: str = Field(alias="windowLabel", description="Time window description")
+    
+    class Config:
+        populate_by_name = True
+
+
+class PlaystyleSummaryModel(BaseModel):
+    """Complete signature playstyle analysis."""
+    summary: PlaystyleSummaryHeaderModel = Field(description="Header summary")
+    axes: PlaystyleAxesModel = Field(description="Six playstyle axes")
+    efficiency: EfficiencyModel = Field(description="Efficiency metrics")
+    tempo: TempoModel = Field(description="Tempo analysis")
+    consistency: ConsistencyModel = Field(description="Consistency analysis")
+    role_and_champs: RoleAndChampsModel = Field(
+        alias="roleAndChamps",
+        description="Role and champion analysis"
+    )
+    insights: list[str] = Field(description="Key insights")
+    generated_at: str = Field(alias="generatedAt", description="ISO timestamp")
+    
+    class Config:
+        populate_by_name = True
+
+
+class PlaystyleSummaryResponse(BaseModel):
+    """Response wrapper for playstyle summary with status."""
+    status: str = Field(
+        description="Match data status: NOT_STARTED, FETCHING, READY, NO_MATCHES, or FAILED"
+    )
+    data: PlaystyleSummaryModel | None = Field(
+        default=None,
+        description="Playstyle summary data, null if status is not READY"
+    )
+    
+    class Config:
+        populate_by_name = True
+

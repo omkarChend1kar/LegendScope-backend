@@ -3,6 +3,10 @@ from app.services.item_store import ItemStore, store
 from app.services.player_matches import PlayerMatchesService, player_matches_service
 from app.services.profile import ProfileService, profile_service
 from app.services.profile_status import ProfileStatusService, profile_status_service
+from app.services.signature_playstyle import (
+    SignaturePlaystyleAnalyzer,
+    signature_playstyle_analyzer,
+)
 
 __all__ = [
     "ItemStore",
@@ -15,4 +19,6 @@ __all__ = [
     "player_matches_service",
     "ProfileStatusService",
     "profile_status_service",
+    "SignaturePlaystyleAnalyzer",
+    "signature_playstyle_analyzer",
 ]
