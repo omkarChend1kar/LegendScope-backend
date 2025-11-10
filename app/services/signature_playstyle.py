@@ -1,7 +1,7 @@
-"""Signature Playstyle Analyzer - Comprehensive playstyle profiling system.
+"""Signature Playstyle Analysis Service.
 
-This module analyzes player match history to generate a detailed playstyle profile
-including axes analysis, tempo breakdown, consistency metrics, and champion comfort.
+Analyzes player match data to generate comprehensive playstyle signatures,
+including axes, efficiency metrics, tempo analysis, and consistency patterns.
 """
 
 import logging
@@ -12,6 +12,7 @@ from typing import Any
 import httpx
 
 from app.core.config import get_settings
+from app.services.text_generation import text_generation_service
 from app.schemas import (
     AxisMetricModel,
     ChampionComfortAxesDeltaModel,
@@ -234,10 +235,10 @@ class SignaturePlaystyleAnalyzer:
                 else "FLEX"
             )
             
-            playstyle_label, one_liner = self._pick_playstyle_label(
+            playstyle_label, one_liner = await self._pick_playstyle_label(
                 axes, primary_role_name, efficiency
             )
-            insights = self._build_insights(axes, efficiency, tempo, consistency)
+            insights = await self._build_insights(axes, efficiency, tempo, consistency)
             
             header = PlaystyleSummaryHeaderModel(
                 primaryRole=primary_role_name,
@@ -567,23 +568,44 @@ class SignaturePlaystyleAnalyzer:
         
         # Build phase models
         by_phase: dict[str, TempoPhaseModel] = {}
+        phases_for_highlights = {}
+        
         for phase_key in ["early", "mid", "late"]:
             data = phase_data[phase_key]
+            avg_kills = round(self._average(data["killsPer10m"]), 2)
+            avg_deaths = round(self._average(data["deathsPer10m"]), 2)
+            avg_dpm = round(self._average(data["dpm"]), 0)
+            avg_cs = round(self._average(data["csPerMin"]), 2)
+            avg_kp = round(self._average(data["kp"]), 2)
+            
             by_phase[phase_key] = TempoPhaseModel(
                 key=phase_key,
                 label=TEMPO_PHASE_LABELS[phase_key],
                 roleLabel="Balanced tempo",
-                killsPer10m=round(self._average(data["killsPer10m"]), 2),
-                deathsPer10m=round(self._average(data["deathsPer10m"]), 2),
-                dpm=round(self._average(data["dpm"]), 0),
-                csPerMin=round(self._average(data["csPerMin"]), 2),
-                kp=round(self._average(data["kp"]), 2),
+                killsPer10m=avg_kills,
+                deathsPer10m=avg_deaths,
+                dpm=avg_dpm,
+                csPerMin=avg_cs,
+                kp=avg_kp,
                 metrics=[],
             )
+            
+            phases_for_highlights[phase_key] = {
+                "kills_per_10m": avg_kills,
+                "deaths_per_10m": avg_deaths,
+                "dpm": avg_dpm,
+                "cs_per_min": avg_cs,
+                "kp": avg_kp,
+            }
         
-        # Determine best phase
-        best_phase = "Mid"  # Default
+        # Determine best phase (highest DPM)
+        best_phase_key = max(
+            phases_for_highlights.items(),
+            key=lambda x: x[1]["dpm"]
+        )[0]
+        best_phase = TEMPO_PHASE_LABELS[best_phase_key]
         
+        # Generate simple highlights (TODO: use text generation service)
         highlights = [
             TempoHighlightModel(
                 id="tempo-highlight-1",
@@ -696,56 +718,10 @@ class SignaturePlaystyleAnalyzer:
         
         return entropy / max_entropy if max_entropy > 0 else 0.0
 
-    def _pick_playstyle_label(
+    async def _pick_playstyle_label(
         self, axes: PlaystyleAxesModel, primary_role: str, efficiency: EfficiencyModel
     ) -> tuple[str, str]:
-        """Pick playstyle label and one-liner."""
-        # Sort axes by score
-        sorted_axes = sorted(
-            [
-                ("aggression", axes.aggression.score),
-                ("survivability", axes.survivability.score),
-                ("skirmishBias", axes.skirmish_bias.score),
-                ("objectiveImpact", axes.objective_impact.score),
-                ("visionDiscipline", axes.vision_discipline.score),
-                ("utility", axes.utility.score),
-            ],
-            key=lambda x: x[1],
-            reverse=True,
-        )
-        
-        top_axis = sorted_axes[0][0] if sorted_axes else "balanced"
-        
-        # Build one-liner
-        kp_pct = int(efficiency.kp * 100)
-        dmg_pct = int(efficiency.damage_share * 100)
-        one_liner = f"Balanced playstyle ({kp_pct}% KP, {dmg_pct}% DMG share)"
-        
-        # Simple label mapping
-        label_map = {
-            "aggression": "Aggressive Striker",
-            "survivability": "Frontline Anchor",
-            "skirmishBias": "Roaming Skirmisher",
-            "objectiveImpact": "Objective-First Navigator",
-            "visionDiscipline": "Map Sentinel",
-            "utility": "Tactical Enabler",
-        }
-        
-        label = label_map.get(top_axis, "Adaptive Strategist")
-        
-        return label, one_liner
-
-    def _build_insights(
-        self,
-        axes: PlaystyleAxesModel,
-        efficiency: EfficiencyModel,
-        tempo: TempoModel,
-        consistency: ConsistencyModel,
-    ) -> list[str]:
-        """Build actionable insights."""
-        insights = []
-        
-        # Top axis insight
+        """Pick playstyle label and one-liner using text generation service."""
         sorted_axes = sorted(
             [
                 ("Aggression", axes.aggression.score),
@@ -759,31 +735,206 @@ class SignaturePlaystyleAnalyzer:
             reverse=True,
         )
         
+        top_axis = sorted_axes[0][0] if sorted_axes else "Balanced"
+        top_score = sorted_axes[0][1] if sorted_axes else 50
+        kp_pct = int(efficiency.kp * 100)
+        dmg_pct = int(efficiency.damage_share * 100)
+        
+        # Build context for AI
+        context = (
+            f"Role: {primary_role}, Top strength: {top_axis} (score: {top_score}/100), "
+            f"KP: {kp_pct}%, Damage share: {dmg_pct}%, KDA: {efficiency.kda:.1f}"
+        )
+        
+        try:
+            # Generate playstyle label (2-3 words)
+            label_query = (
+                "Generate a concise 2-3 word playstyle archetype label. "
+                "Examples: 'Aggressive Striker', 'Map Sentinel', 'Frontline Anchor'. "
+                "Be creative but clear. Return only the label."
+            )
+            
+            label = await text_generation_service.generate_text(
+                context=context,
+                query=label_query,
+                max_tokens=15,
+                temperature=0.8,
+            )
+            
+            # Generate one-liner (brief summary)
+            oneliner_query = (
+                "Generate a brief 8-12 word summary capturing the playstyle essence. "
+                "Be specific about stats and tendencies. No generic phrases."
+            )
+            
+            one_liner = await text_generation_service.generate_text(
+                context=context,
+                query=oneliner_query,
+                max_tokens=30,
+                temperature=0.7,
+            )
+            
+            # Clean responses
+            label = label.strip().strip('"\'').strip('.')
+            one_liner = one_liner.strip().strip('"\'').strip('.')
+            
+            # Validate responses aren't empty
+            if not label or len(label) < 3:
+                raise ValueError("Invalid label generated")
+            if not one_liner or len(one_liner) < 10:
+                raise ValueError("Invalid one-liner generated")
+            
+            logger.info(f"Generated playstyle: {label} - {one_liner}")
+            return label, one_liner
+            
+        except Exception as e:
+            logger.warning(f"Text generation failed for playstyle label: {e}, using fallback")
+            return self._fallback_playstyle_label(axes, primary_role, efficiency)
+    
+    def _fallback_playstyle_label(
+        self, axes: PlaystyleAxesModel, primary_role: str, efficiency: EfficiencyModel
+    ) -> tuple[str, str]:
+        """Fallback playstyle label generation."""
+        sorted_axes = sorted(
+            [
+                ("Aggression", axes.aggression.score),
+                ("Survivability", axes.survivability.score),
+                ("Skirmish Bias", axes.skirmish_bias.score),
+                ("Objective Impact", axes.objective_impact.score),
+                ("Vision Discipline", axes.vision_discipline.score),
+                ("Utility", axes.utility.score),
+            ],
+            key=lambda x: x[1],
+            reverse=True,
+        )
+        
+        top_axis = sorted_axes[0][0] if sorted_axes else "Balanced"
+        kp_pct = int(efficiency.kp * 100)
+        dmg_pct = int(efficiency.damage_share * 100)
+        
+        label_map = {
+            "Aggression": "Aggressive Striker",
+            "Survivability": "Frontline Anchor",
+            "Skirmish Bias": "Roaming Skirmisher",
+            "Objective Impact": "Objective Navigator",
+            "Vision Discipline": "Map Sentinel",
+            "Utility": "Tactical Enabler",
+        }
+        
+        label = label_map.get(top_axis, "Adaptive Strategist")
+        one_liner = f"Balanced playstyle ({kp_pct}% KP, {dmg_pct}% DMG share)"
+        
+        return label, one_liner
+
+    async def _build_insights(
+        self,
+        axes: PlaystyleAxesModel,
+        efficiency: EfficiencyModel,
+        tempo: TempoModel,
+        consistency: ConsistencyModel,
+    ) -> list[str]:
+        """Build actionable insights using text generation service."""
+        sorted_axes = sorted(
+            [
+                ("Aggression", axes.aggression.score),
+                ("Survivability", axes.survivability.score),
+                ("Skirmish Bias", axes.skirmish_bias.score),
+                ("Objective Impact", axes.objective_impact.score),
+                ("Vision Discipline", axes.vision_discipline.score),
+                ("Utility", axes.utility.score),
+            ],
+            key=lambda x: x[1],
+            reverse=True,
+        )
+        
+        insights = []
+        
+        # Insight 1: Top axis strength
         if sorted_axes:
             top_name, top_score = sorted_axes[0]
-            insights.append(
-                f"Your strongest axis is {top_name} ({top_score}). "
-                f"Anchor plays around this strength."
+            context = f"Top axis: {top_name} with score {top_score}/100"
+            query = (
+                "Generate 1 actionable insight about their strongest axis in 12-15 words. "
+                "Be specific and tactical."
             )
+            try:
+                insight = await text_generation_service.generate_text(
+                    context=context,
+                    query=query,
+                    max_tokens=40,
+                    temperature=0.7,
+                )
+                insights.append(insight.strip().strip('"\'').strip('.'))
+            except Exception as e:
+                logger.warning(f"Failed to generate axis insight: {e}")
+                insights.append(
+                    f"Your strongest axis is {top_name} ({top_score}). Anchor plays around this strength."
+                )
         
-        # Consistency insight
+        # Insight 2: Consistency pattern
         cv_pct = int(consistency.kda_cv * 100)
-        insights.append(
-            f"Consistency profile reads {consistency.label.lower()} "
-            f"(KDA CV {cv_pct}%). Expect {consistency.label.lower()} performance."
+        context = f"Consistency: {consistency.label}, KDA CV: {cv_pct}%"
+        query = (
+            "Generate 1 insight about what this consistency level means for performance in 12-15 words. "
+            "Be specific about implications."
         )
-        
-        # Tempo insight
-        insights.append(
-            f"{tempo.best_phase} game impact shines brightest — "
-            f"leverage this timing to secure advantages."
-        )
-        
-        # Efficiency insight
-        if efficiency.kp >= 0.6 and efficiency.damage_share >= 0.22:
-            insights.append(
-                "High team share: KP and damage output suggest you're a primary carry."
+        try:
+            insight = await text_generation_service.generate_text(
+                context=context,
+                query=query,
+                max_tokens=40,
+                temperature=0.7,
             )
+            insights.append(insight.strip().strip('"\'').strip('.'))
+        except Exception as e:
+            logger.warning(f"Failed to generate consistency insight: {e}")
+            insights.append(
+                f"Consistency profile reads {consistency.label.lower()} (KDA CV {cv_pct}%). "
+                f"Expect {consistency.label.lower()} performance."
+            )
+        
+        # Insight 3: Tempo/timing advantage
+        context = f"Best phase: {tempo.best_phase}"
+        query = (
+            "Generate 1 tactical insight about leveraging this timing window in 12-15 words. "
+            "Focus on game strategy."
+        )
+        try:
+            insight = await text_generation_service.generate_text(
+                context=context,
+                query=query,
+                max_tokens=40,
+                temperature=0.7,
+            )
+            insights.append(insight.strip().strip('"\'').strip('.'))
+        except Exception as e:
+            logger.warning(f"Failed to generate tempo insight: {e}")
+            insights.append(
+                f"{tempo.best_phase} game impact shines brightest — leverage this timing to secure advantages."
+            )
+        
+        # Insight 4: Team contribution
+        kp_pct = int(efficiency.kp * 100)
+        dmg_pct = int(efficiency.damage_share * 100)
+        context = f"KP: {kp_pct}%, Damage share: {dmg_pct}%, KDA: {efficiency.kda:.1f}"
+        query = (
+            "Generate 1 insight about their team contribution style in 12-15 words. "
+            "Be specific about role and impact."
+        )
+        try:
+            insight = await text_generation_service.generate_text(
+                context=context,
+                query=query,
+                max_tokens=40,
+                temperature=0.7,
+            )
+            insights.append(insight.strip().strip('"\'').strip('.'))
+        except Exception as e:
+            logger.warning(f"Failed to generate contribution insight: {e}")
+            if efficiency.kp >= 0.6 and efficiency.damage_share >= 0.22:
+                insights.append("High team share: KP and damage output suggest you're a primary carry.")
+            else:
+                insights.append("Focus on consistent impact across all game phases.")
         
         return insights[:4]
 

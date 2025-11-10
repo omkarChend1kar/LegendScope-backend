@@ -3,6 +3,8 @@ from fastapi import APIRouter, HTTPException, status
 from app.core.config import get_settings
 from app.schemas import (
     ChampionSummariesResponse,
+    ChatMessage,
+    FaultlinesResponse,
     Item,
     ItemCreate,
     NarrativeSummaryResponse,
@@ -14,6 +16,12 @@ from app.schemas import (
     StoreMatchesRequest,
     StoreMatchesResponse,
     SummaryCardsResponse,
+    TextGenerationRequest,
+    TextGenerationResponse,
+    VoiceInFogChatRequest,
+    VoiceInFogChatResponse,
+    VoiceInFogMatchChatRequest,
+    VoiceInFogStarterResponse,
 )
 from app.services import (
     battle_summary_service,
@@ -22,6 +30,9 @@ from app.services import (
     signature_playstyle_analyzer,
     store,
 )
+from app.services.faultlines import faultlines_analyzer
+from app.services.text_generation import text_generation_service
+from app.services.voice_in_fog import voice_in_fog_service
 
 router = APIRouter()
 
@@ -313,4 +324,580 @@ async def get_signature_playstyle_summary(player_id: str) -> PlaystyleSummaryRes
         }
     """
     return await signature_playstyle_analyzer.analyze(player_id)
+
+
+@router.post(
+    "/text/generate",
+    response_model=TextGenerationResponse,
+    tags=["Text Generation"],
+)
+async def generate_text(request: TextGenerationRequest) -> TextGenerationResponse:
+    """
+    Generate text using LLM based on context and query.
+    
+    This is a common service endpoint that can be used by any service
+    (battle_summary, signature_playstyle, etc.) to generate contextual
+    text narratives, labels, insights, and descriptions.
+    
+    The service accepts:
+    - **context**: Background information and data for the LLM
+    - **query**: The specific question or task for the LLM
+    - **max_tokens**: Maximum tokens in the response (10-2000)
+    - **temperature**: Sampling temperature 0-1 (higher = more creative)
+    
+    Args:
+        request: TextGenerationRequest with context, query, and parameters
+        
+    Returns:
+        TextGenerationResponse with generated text or error message
+        
+    Example Request:
+        {
+            "context": "Player stats: KDA 5.89, KP 50%, Damage Share 20%",
+            "query": "Generate a playstyle label and one-liner",
+            "max_tokens": 100,
+            "temperature": 0.7
+        }
+        
+    Example Response:
+        {
+            "text": "Frontline Anchor - Durable engagements with controlled death pace",
+            "status": "success",
+            "error": null
+        }
+    """
+    try:
+        generated_text = await text_generation_service.generate_text(
+            context=request.context,
+            query=request.query,
+            max_tokens=request.max_tokens,
+            temperature=request.temperature,
+        )
+        return TextGenerationResponse(
+            text=generated_text,
+            status="success",
+            error=None,
+        )
+    except Exception as e:
+        return TextGenerationResponse(
+            text="",
+            status="error",
+            error=str(e),
+        )
+
+
+@router.get("/battles/{player_id}/faultlines/summary", response_model=FaultlinesResponse, tags=["Battles"])
+async def get_faultlines_summary(player_id: str) -> FaultlinesResponse:
+    """
+    Faultlines: Strengths and Shadows
+    
+    Analyze player performance across 8 core competency axes to identify
+    top 3 strengths and bottom 3 weaknesses. Each axis includes normalized scores,
+    key metrics, trends, telemetry, chart configurations, and AI-generated narratives.
+    
+    The 8 axes:
+    - Combat Efficiency Index (CEI): KDA, Kill Participation, Damage Per Minute
+    - Objective Reliability Index (ORI): Dragon/Baron/Turret participation
+    - Survival Discipline Index (SDI): Death clustering and damage mitigation
+    - Vision & Awareness Index (VAI): Vision score and ward control
+    - Economy Utilization Index (EUI): Gold per minute and conversion efficiency
+    - Role Stability Index (RSI): Win rate variance across roles
+    - Momentum Index (MI): Win/loss streak patterns
+    - Composure Index (CI): Performance variance and consistency
+    
+    Returns:
+        FaultlinesResponse with status and data containing:
+        - summary: Player/cohort/window labels
+        - axes: All 8 axes with scores, metrics, trends, telemetry, charts, and narratives
+        - insights: Top 3 actionable insights
+    
+    Status codes:
+        - READY: Analysis complete with match data
+        - NOT_STARTED: No profile exists for this player
+        - FETCHING: Match data is being collected
+        - NO_MATCHES: Profile exists but no matches found
+        - FAILED: Error during analysis
+    
+    Example:
+        GET /api/battles/{puuid}/faultlines/summary
+    """
+    try:
+        result = await faultlines_analyzer.analyze(player_id)
+        return result
+    except Exception as e:
+        return FaultlinesResponse(
+            status="FAILED",
+            data=None,
+        )
+
+
+@router.post(
+    "/voice-in-fog/chat",
+    response_model=VoiceInFogChatResponse,
+    tags=["Voice in the Fog"],
+    summary="Chat with Voice in the Fog (no context)"
+)
+async def voice_chat(request: VoiceInFogChatRequest) -> VoiceInFogChatResponse:
+    """
+    Chat with Voice in the Fog AI assistant without specific context.
+    
+    Args:
+        request: Chat request with message and optional conversation history
+    
+    Returns:
+        VoiceInFogChatResponse with AI reply
+    
+    Example:
+        POST /api/voice-in-fog/chat
+        {
+          "message": "What's the meta right now?",
+          "conversation_history": [],
+          "model": "Claude 3.7 Sonnet"
+        }
+    """
+    try:
+        # Build messages list
+        messages = []
+        if request.conversation_history:
+            messages.extend([
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ])
+        messages.append({"role": "user", "content": request.message})
+        
+        result = await voice_in_fog_service.chat(
+            messages=messages,
+            model=request.model,
+            temperature=request.temperature or 0.7,
+            max_tokens=request.max_tokens or 500,
+        )
+        
+        return VoiceInFogChatResponse(
+            modelUsed=result["modelUsed"],
+            reply=result["reply"],
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.post(
+    "/voice-in-fog/chat/matches/{player_id}",
+    response_model=VoiceInFogChatResponse,
+    tags=["Voice in the Fog"],
+    summary="Chat about player matches with context"
+)
+async def voice_chat_with_matches(
+    player_id: str,
+    request: VoiceInFogChatRequest,
+) -> VoiceInFogChatResponse:
+    """
+    Chat with Voice in the Fog about a player's matches with full context.
+    
+    Args:
+        player_id: Player PUUID
+        request: Chat request with message and optional conversation history
+    
+    Returns:
+        VoiceInFogChatResponse with contextual AI reply
+    
+    Example:
+        POST /api/voice-in-fog/chat/matches/{puuid}
+        {
+          "message": "What's my best champion?",
+          "conversation_history": []
+        }
+    """
+    try:
+        # Build conversation history
+        conversation_history = None
+        if request.conversation_history:
+            conversation_history = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ]
+        
+        # Fetch matches from Lambda
+        settings = get_settings()
+        import httpx
+        
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                settings.lambda_get_matches_url,
+                json={"puuid": player_id},
+            )
+            response.raise_for_status()
+            data = response.json()
+            matches = data.get("matches", [])
+        
+        if not matches:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No matches found for this player"
+            )
+        
+        # Use chat_with_match_context directly
+        result = await voice_in_fog_service.chat_with_match_context(
+            user_message=request.message,
+            matches=matches,
+            conversation_history=conversation_history,
+            model=request.model,
+        )
+        
+        return VoiceInFogChatResponse(
+            modelUsed=result["modelUsed"],
+            reply=result["reply"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.post(
+    "/voice-in-fog/chat/playstyle/{player_id}",
+    response_model=VoiceInFogChatResponse,
+    tags=["Voice in the Fog"],
+    summary="Chat about playstyle analysis with context"
+)
+async def voice_chat_with_playstyle(
+    player_id: str,
+    request: VoiceInFogChatRequest,
+) -> VoiceInFogChatResponse:
+    """
+    Chat with Voice in the Fog about a player's playstyle analysis.
+    
+    Args:
+        player_id: Player PUUID
+        request: Chat request with message and optional conversation history
+    
+    Returns:
+        VoiceInFogChatResponse with contextual AI reply about playstyle
+    
+    Example:
+        POST /api/voice-in-fog/chat/playstyle/{puuid}
+        {
+          "message": "How can I improve my aggression?",
+          "conversation_history": []
+        }
+    """
+    try:
+        # Get playstyle analysis
+        playstyle_response = await signature_playstyle_analyzer.analyze(player_id)
+        
+        if playstyle_response.status != "READY" or not playstyle_response.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Playstyle analysis not available: {playstyle_response.status}",
+            )
+        
+        # Build conversation history
+        conversation_history = None
+        if request.conversation_history:
+            conversation_history = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ]
+        
+        result = await voice_in_fog_service.chat_with_playstyle_context(
+            user_message=request.message,
+            playstyle_data=playstyle_response.data.model_dump(),
+            conversation_history=conversation_history,
+            model=request.model,
+        )
+        
+        return VoiceInFogChatResponse(
+            modelUsed=result["modelUsed"],
+            reply=result["reply"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.post(
+    "/voice-in-fog/chat/faultlines/{player_id}",
+    response_model=VoiceInFogChatResponse,
+    tags=["Voice in the Fog"],
+    summary="Chat about Faultlines analysis with context"
+)
+async def voice_chat_with_faultlines(
+    player_id: str,
+    request: VoiceInFogChatRequest,
+) -> VoiceInFogChatResponse:
+    """
+    Chat with Voice in the Fog about a player's Faultlines (strengths/weaknesses).
+    
+    Args:
+        player_id: Player PUUID
+        request: Chat request with message and optional conversation history
+    
+    Returns:
+        VoiceInFogChatResponse with contextual AI reply about Faultlines
+    
+    Example:
+        POST /api/voice-in-fog/chat/faultlines/{puuid}
+        {
+          "message": "Why is my survival discipline low?",
+          "conversation_history": []
+        }
+    """
+    try:
+        # Get faultlines analysis
+        faultlines_response = await faultlines_analyzer.analyze(player_id)
+        
+        if faultlines_response.status != "READY" or not faultlines_response.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Faultlines analysis not available: {faultlines_response.status}",
+            )
+        
+        # Build conversation history
+        conversation_history = None
+        if request.conversation_history:
+            conversation_history = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ]
+        
+        result = await voice_in_fog_service.chat_with_faultlines_context(
+            user_message=request.message,
+            faultlines_data=faultlines_response.model_dump(),
+            conversation_history=conversation_history,
+            model=request.model,
+        )
+        
+        return VoiceInFogChatResponse(
+            modelUsed=result["modelUsed"],
+            reply=result["reply"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+
+# ==================== Dedicated Starter Topic APIs ====================
+
+@router.post(
+    "/voice-in-fog/general-chat",
+    response_model=VoiceInFogChatResponse,
+    tags=["Voice in the Fog"],
+    summary="General chat without specific context"
+)
+async def voice_general_chat(
+    request: VoiceInFogChatRequest,
+) -> VoiceInFogChatResponse:
+    """
+    General chat endpoint for broad gameplay questions.
+    
+    Optional: Provide player_id to fetch match history and get personalized advice.
+    """
+    try:
+        conversation_history = []
+        if request.conversation_history:
+            conversation_history = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ]
+        conversation_history.append({"role": "user", "content": request.message})
+        
+        result = await voice_in_fog_service.chat(
+            messages=conversation_history,
+            context_prompt="You are an AI strategist embedded in LegendScope. Provide clear, actionable League of Legends advice.",
+            player_id=request.player_id,  # Pass player_id if provided
+            model=request.model,
+        )
+        
+        return VoiceInFogChatResponse(
+            modelUsed=result["modelUsed"],
+            reply=result["reply"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.get(
+    "/voice-in-fog/echoes-of-battle/{player_id}",
+    response_model=VoiceInFogStarterResponse,
+    tags=["Voice in the Fog"],
+    summary="Echoes of Battle - Battle history insights"
+)
+async def voice_echoes_of_battle(
+    player_id: str,
+    starter_topic: str,
+) -> VoiceInFogStarterResponse:
+    """
+    Get Echoes of Battle insights for a specific starter topic.
+    
+    Valid starter topics:
+    - "Battles Fought"
+    - "Claim / Fall Ratio"
+    - "Longest Claim & Fall Streaks"
+    - "Clutch Battles"
+    - "Role Influence"
+    """
+    try:
+        valid_topics = [
+            "Battles Fought",
+            "Claim / Fall Ratio",
+            "Longest Claim & Fall Streaks",
+            "Clutch Battles",
+            "Role Influence"
+        ]
+        
+        if starter_topic not in valid_topics:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid starter topic. Must be one of: {', '.join(valid_topics)}"
+            )
+        
+        result = await voice_in_fog_service.get_echoes_of_battle_insight(
+            player_id=player_id,
+            starter_topic=starter_topic,
+        )
+        
+        return VoiceInFogStarterResponse(
+            starterTopic=result["starterTopic"],
+            insight=result["insight"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.get(
+    "/voice-in-fog/patterns-beneath-chaos/{player_id}",
+    response_model=VoiceInFogStarterResponse,
+    tags=["Voice in the Fog"],
+    summary="Patterns Beneath Chaos - Playstyle axis analysis"
+)
+async def voice_patterns_beneath_chaos(
+    player_id: str,
+    starter_topic: str,
+) -> VoiceInFogStarterResponse:
+    """
+    Get Patterns Beneath Chaos insights for a specific playstyle axis.
+    
+    Valid starter topics:
+    - "Aggression"
+    - "Survivability"
+    - "Skirmish Bias"
+    - "Objective Impact"
+    - "Vision Discipline"
+    - "Utility"
+    - "Tempo Profile"
+    """
+    try:
+        valid_topics = [
+            "Aggression",
+            "Survivability",
+            "Skirmish Bias",
+            "Objective Impact",
+            "Vision Discipline",
+            "Utility",
+            "Tempo Profile"
+        ]
+        
+        if starter_topic not in valid_topics:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid starter topic. Must be one of: {', '.join(valid_topics)}"
+            )
+        
+        result = await voice_in_fog_service.get_patterns_beneath_chaos_insight(
+            player_id=player_id,
+            starter_topic=starter_topic,
+        )
+        
+        return VoiceInFogStarterResponse(
+            starterTopic=result["starterTopic"],
+            insight=result["insight"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
+
+
+@router.get(
+    "/voice-in-fog/faultlines-analysis/{player_id}",
+    response_model=VoiceInFogStarterResponse,
+    tags=["Voice in the Fog"],
+    summary="Faultlines - Performance index analysis"
+)
+async def voice_faultlines_analysis(
+    player_id: str,
+    starter_topic: str,
+) -> VoiceInFogStarterResponse:
+    """
+    Get Faultlines insights for a specific performance index.
+    
+    Valid starter topics:
+    - "Combat Efficiency Index"
+    - "Objective Reliability Index"
+    - "Survival Discipline Index"
+    - "Vision & Awareness Index"
+    - "Economy Utilization Index"
+    - "Momentum Index"
+    - "Composure Index"
+    """
+    try:
+        valid_topics = [
+            "Combat Efficiency Index",
+            "Objective Reliability Index",
+            "Survival Discipline Index",
+            "Vision & Awareness Index",
+            "Economy Utilization Index",
+            "Momentum Index",
+            "Composure Index"
+        ]
+        
+        if starter_topic not in valid_topics:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid starter topic. Must be one of: {', '.join(valid_topics)}"
+            )
+        
+        result = await voice_in_fog_service.get_faultlines_insight(
+            player_id=player_id,
+            starter_topic=starter_topic,
+        )
+        
+        return VoiceInFogStarterResponse(
+            starterTopic=result["starterTopic"],
+            insight=result["insight"],
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
 

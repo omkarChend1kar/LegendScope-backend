@@ -1,0 +1,156 @@
+{
+  "pentaKills": 0,
+  "trueDamageTaken": 2904,
+  "queueId": 420,
+  "deaths": 3,
+  "teamPosition": "TOP",
+  "aggressionIndex": 8.2,
+  "riftHeraldKills": null,
+  "goldSpent": 14275,
+  "firstTowerKill": false,
+  "firstInhibitorKill": null,
+  "wardsKilled": 2,
+  "baronKills": 0,
+  "neutralMinionsKilledTeamJungle": null,
+  "teamTowerKills": null,
+  "turretKills": 2,
+  "totalHealsOnTeammates": 0,
+  "region": "NA1",
+  "ingestionTimestamp": "2025-11-08T16:28:12.852838Z",
+  "tripleKills": 0,
+  "csPerMinute": null,
+  "gameDuration": 1786,
+  "wardsPlaced": 10,
+  "gameEndTimestamp": 1762595245540,
+  "matchPerformanceIndex": 30.49,
+  "championId": 92,
+  "source": "riot-api",
+  "lane": "TOP",
+  "totalHeal": 6931,
+  "championName": "Riven",
+  "summoner1Id": 4,
+  "stabilityScore": 0.8,
+  "objectiveIndex": 2,
+  "neutralMinionsKilled": 12,
+  "gameCreation": 1762593425098,
+  "timeCCingOthers": 36,
+  "patchVersion": "15.22.724.5161",
+  "largestKillingSpree": 7,
+  "win": true,
+  "objectivesStolenAssists": 0,
+  "damageDealtToTurrets": 7744,
+  "earlySurrender": null,
+  "kills": 7,
+  "visionWardsBoughtInGame": 1,
+  "neutralMinionsKilledEnemyJungle": null,
+  "riskScore": 0.43,
+  "season": null,
+  "totalMinionsKilled": 284,
+  "doubleKills": 1,
+  "platformId": "NA1",
+  "teamEarlySurrendered": false,
+  "magicDamageTaken": 6470,
+  "objectivesStolen": 0,
+  "kdaRatio": 5,
+  "physicalDamageTaken": 11661,
+  "damageDealtToObjectives": 12031,
+  "totalDamageDealtToChampions": 22468,
+  "adaptationScore": 0,
+  "inhibitorKills": 0,
+  "physicalDamageDealtToChampions": 20620,
+  "largestMultiKill": 2,
+  "visionPerMinute": 0.735103,
+  "magicDamageDealtToChampions": 0,
+  "goldPerMinute": 564.932866,
+  "teamDragonKills": null,
+  "individualPosition": "TOP",
+  "puuid": "AE6W6hK5V8cX9u7QgudTQsrYaGQQafYzONYl3EieQwtcZTkatRhVRLLRqAITJMKhy04eYi0vdPYPbA",
+  "detectorWardsPlaced": 1,
+  "totalDamageShieldedOnTeammates": 0,
+  "firstTowerAssist": false,
+  "assists": 8,
+  "summonerName": "",
+  "quadraKills": 0,
+  "perks": {
+    "statPerks": {
+      "offense": 5007,
+      "defense": 5001,
+      "flex": 5008
+    },
+    "styles": [
+      {
+        "description": "primaryStyle",
+        "selections": [
+          {
+            "perk": 8010,
+            "var3": 0,
+            "var2": 0,
+            "var1": 121
+          },
+          {
+            "perk": 9111,
+            "var3": 0,
+            "var2": 300,
+            "var1": 1442
+          },
+          {
+            "perk": 9105,
+            "var3": 0,
+            "var2": 40,
+            "var1": 19
+          },
+          {
+            "perk": 8299,
+            "var3": 0,
+            "var2": 0,
+            "var1": 414
+          }
+        ],
+        "style": 8000
+      },
+      {
+        "description": "subStyle",
+        "selections": [
+          {
+            "perk": 8316,
+            "var3": 0,
+            "var2": 10,
+            "var1": 7
+          },
+          {
+            "perk": 8321,
+            "var3": 0,
+            "var2": 0,
+            "var1": 972
+          }
+        ],
+        "style": 8300
+      }
+    ]
+  },
+  "killingSprees": 1,
+  "items": [
+    1055,
+    3171,
+    6610,
+    6696,
+    6333,
+    6694,
+    3364
+  ],
+  "goldEarned": 16822,
+  "championLevel": 18,
+  "summoner2Id": 14,
+  "dataVersion": "2",
+  "visionScore": 21,
+  "firstBloodKill": false,
+  "month": "2025-11",
+  "totalDamageTaken": 21036,
+  "gameMode": "CLASSIC",
+  "dayOfWeek": "Saturday",
+  "teamBaronKills": null,
+  "dragonKills": 0,
+  "trueDamageDealtToChampions": 1848,
+  "supportIndex": 2.1,
+  "matchId": "NA1_5408986667"
+}

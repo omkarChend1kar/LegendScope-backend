@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -421,6 +422,224 @@ class PlaystyleSummaryResponse(BaseModel):
         default=None,
         description="Playstyle summary data, null if status is not READY"
     )
+    
+    class Config:
+        populate_by_name = True
+
+
+# Text Generation Models
+
+class TextGenerationRequest(BaseModel):
+    """Request model for text generation."""
+    context: str = Field(
+        ...,
+        description="Background information and data for the LLM",
+        min_length=1,
+        max_length=10000,
+    )
+    query: str = Field(
+        ...,
+        description="The specific question or task for the LLM",
+        min_length=1,
+        max_length=1000,
+    )
+    max_tokens: int = Field(
+        default=500,
+        description="Maximum tokens in the response",
+        ge=10,
+        le=2000,
+    )
+    temperature: float = Field(
+        default=0.7,
+        description="Sampling temperature (0-1, higher = more creative)",
+        ge=0.0,
+        le=1.0,
+    )
+
+
+class TextGenerationResponse(BaseModel):
+    """Response model for text generation."""
+    text: str = Field(
+        description="Generated text from LLM"
+    )
+    status: str = Field(
+        default="success",
+        description="Generation status: success or error"
+    )
+    error: str | None = Field(
+        default=None,
+        description="Error message if generation failed"
+    )
+
+
+# Faultlines Models
+
+class FaultlinesMetricModel(BaseModel):
+    """Individual metric within an axis."""
+    id: str = Field(description="Metric identifier")
+    label: str = Field(description="Metric display label")
+    value: float = Field(description="Raw metric value")
+    formatted_value: str = Field(description="Formatted display value", alias="formattedValue")
+    unit: str | None = Field(default="", description="Unit of measurement")
+    percent: float = Field(description="Percentile 0-1", ge=0.0, le=1.0)
+    trend: str = Field(description="up, down, or flat")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesVisualizationBucketModel(BaseModel):
+    """Histogram bucket data."""
+    label: str = Field(description="Bucket label")
+    value: float = Field(description="Bucket value/count")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesVisualizationPointModel(BaseModel):
+    """Point for line/scatter/timeline charts."""
+    label: str | None = Field(default=None, description="Point label")
+    value: float | None = Field(default=None, description="Point value")
+    x: float | None = Field(default=None, description="X coordinate for scatter")
+    y: float | None = Field(default=None, description="Y coordinate for scatter")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesVisualizationAxisModel(BaseModel):
+    """Radar chart axis data."""
+    label: str = Field(description="Axis label")
+    value: float = Field(description="Axis value")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesVisualizationDistributionModel(BaseModel):
+    """Boxplot distribution data."""
+    min: float = Field(description="Minimum value")
+    q1: float = Field(description="First quartile")
+    median: float = Field(description="Median value")
+    q3: float = Field(description="Third quartile")
+    max: float = Field(description="Maximum value")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesVisualizationModel(BaseModel):
+    """Visualization configuration for an axis."""
+    type: str = Field(description="Chart type: bar, progress, histogram, line, scatter, radar, timeline, boxplot")
+    value: float | None = Field(default=None, description="Single value for bar/progress")
+    benchmark: float | None = Field(default=None, description="Benchmark value for bar/progress")
+    buckets: list[FaultlinesVisualizationBucketModel] | None = Field(default=None, description="Histogram buckets")
+    points: list[FaultlinesVisualizationPointModel] | None = Field(default=None, description="Line/scatter/timeline points")
+    axes: list[FaultlinesVisualizationAxisModel] | None = Field(default=None, description="Radar axes", alias="axes")
+    distribution: FaultlinesVisualizationDistributionModel | None = Field(default=None, description="Boxplot distribution")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesAxisModel(BaseModel):
+    """Single analytical axis in the faultlines analysis."""
+    id: str = Field(description="Axis identifier")
+    title: str = Field(description="Axis display title")
+    description: str = Field(description="Axis description")
+    derived_from: list[str] = Field(description="List of source metrics", alias="derivedFrom")
+    score: int = Field(description="Normalized score 0-100", ge=0, le=100)
+    insight: str = Field(description="AI-generated insight text")
+    visualization: FaultlinesVisualizationModel = Field(description="Visualization config")
+    metrics: list[FaultlinesMetricModel] = Field(description="Supporting metrics")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesSummaryModel(BaseModel):
+    """Complete faultlines analysis data."""
+    player_id: str = Field(description="Player identifier", alias="playerId")
+    window_label: str = Field(description="Analysis window", alias="windowLabel")
+    generated_at: str = Field(description="ISO timestamp", alias="generatedAt")
+    axes: list[FaultlinesAxisModel] = Field(description="All 8 analytical axes")
+    
+    class Config:
+        populate_by_name = True
+
+
+class FaultlinesResponse(BaseModel):
+    """Response wrapper for faultlines analysis."""
+    status: str = Field(
+        description="Match data status: NOT_STARTED, FETCHING, READY, NO_MATCHES, or FAILED"
+    )
+    data: FaultlinesSummaryModel | None = Field(
+        default=None,
+        description="Faultlines data, null if status is not READY"
+    )
+    
+    class Config:
+        populate_by_name = True
+
+
+# Voice in the Fog Schemas (Chat with Context)
+
+class ChatMessage(BaseModel):
+    """Single chat message."""
+    role: str = Field(description="Message role: 'user' or 'assistant'")
+    content: str = Field(description="Message content")
+
+
+class VoiceInFogChatRequest(BaseModel):
+    """Request for Voice in the Fog chat."""
+    message: str = Field(description="User's message/question")
+    player_id: str | None = Field(
+        default=None,
+        description="Optional player PUUID to fetch match history and build gameplay profile"
+    )
+    conversation_history: list[ChatMessage] | None = Field(
+        default=None,
+        description="Previous messages in conversation"
+    )
+    model: str | None = Field(
+        default=None,
+        description="Model to use (optional, defaults to Claude 3.7 Sonnet)"
+    )
+    temperature: float | None = Field(
+        default=0.7,
+        ge=0.0,
+        le=1.0,
+        description="Sampling temperature"
+    )
+    max_tokens: int | None = Field(
+        default=500,
+        ge=50,
+        le=2000,
+        description="Maximum tokens in response"
+    )
+
+
+class VoiceInFogMatchChatRequest(VoiceInFogChatRequest):
+    """Chat request with match context - player_id is required."""
+    player_id: str = Field(description="Player PUUID for match context (required for match chat)")
+
+    model_config = {"extra": "allow"}  # Allow player_id override
+
+
+class VoiceInFogChatResponse(BaseModel):
+    """Response from Voice in the Fog chat."""
+    modelUsed: str = Field(description="Model used for generation")
+    reply: str = Field(description="AI assistant's reply")
+    
+    class Config:
+        populate_by_name = True
+
+
+class VoiceInFogStarterResponse(BaseModel):
+    """Response from Voice in the Fog starter topic analysis."""
+    starterTopic: str = Field(description="The starter topic that was analyzed")
+    insight: str = Field(description="AI-generated insight based on match data")
     
     class Config:
         populate_by_name = True

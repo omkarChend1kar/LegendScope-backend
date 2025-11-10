@@ -1,0 +1,2003 @@
+{
+  "status": "READY",
+  "data": {
+    "summary": {
+      "playerLabel": "Summoner \u2022 Jungle \u2022 Patch 14.20",
+      "windowLabel": "Last 20 Ranked Solo Games",
+      "cohortLabel": "Gold I Jungles",
+      "sampleSize": 20,
+      "overallLabel": "Solid foundation with growth opportunities",
+      "overallVariant": "neutral",
+      "generatedAt": "2025-11-10T06:37:05.122023Z"
+    },
+    "axes": [
+      {
+        "key": "cei",
+        "label": "Combat Efficiency Index",
+        "description": "Measures offensive efficiency \u2014 how much impact per engagement.",
+        "score": 90,
+        "scoreLabel": "Explosive",
+        "variant": "positive",
+        "narrative": {
+          "headline": "You convert fights when allies collapse.",
+          "body": "Kill participation and KDA outpace your role cohort, but isolated duels still punish overextensions."
+        },
+        "metrics": [
+          {
+            "id": "kda",
+            "label": "KDA Ratio",
+            "unit": "ratio",
+            "value": 4.255873015873016,
+            "displayValue": "4.26",
+            "comparison": "+28% vs cohort",
+            "direction": "positive",
+            "percent": 0.8511746031746033
+          },
+          {
+            "id": "solo_kill_rate",
+            "label": "Solo Kill Rate",
+            "unit": "%",
+            "value": 0.44404326279006584,
+            "displayValue": "44%",
+            "comparison": "Lower independence",
+            "direction": "neutral",
+            "percent": 0.44404326279006584
+          },
+          {
+            "id": "dpm",
+            "label": "Damage / Min",
+            "unit": "",
+            "value": 880.857209206767,
+            "displayValue": "880",
+            "comparison": "+19% vs cohort",
+            "direction": "positive",
+            "percent": 1.0
+          }
+        ],
+        "trend": {
+          "label": "Momentum (last 10 games)",
+          "series": [
+            {
+              "match": 11,
+              "minute": null,
+              "delta": -0.6181746978964643,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 12,
+              "minute": null,
+              "delta": -0.6475458749813516,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 13,
+              "minute": null,
+              "delta": -0.2950917499627033,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 14,
+              "minute": null,
+              "delta": -0.353834104132478,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 15,
+              "minute": null,
+              "delta": -0.8825152916604505,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 16,
+              "minute": null,
+              "delta": 1.036401611218857,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 17,
+              "minute": null,
+              "delta": -0.8531441145755632,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 18,
+              "minute": null,
+              "delta": -0.7128151573922125,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 19,
+              "minute": null,
+              "delta": 2.5245412501864837,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 20,
+              "minute": null,
+              "delta": -0.12725645233477548,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Kills",
+              "unit": "/game",
+              "value": 7.2
+            },
+            {
+              "label": "Assists",
+              "unit": "/game",
+              "value": 8.2
+            },
+            {
+              "label": "Deaths",
+              "unit": "/game",
+              "value": 5.8
+            }
+          ],
+          "focus": "Allied engages convert at 68% claim rate; solo duels convert at 41%."
+        },
+        "chart": {
+          "type": "bar",
+          "series": [
+            {
+              "id": null,
+              "label": "You",
+              "value": 90.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "Cohort Avg",
+              "value": 64.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "Global Avg",
+              "value": 58.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No combat metrics available for this window."
+      },
+      {
+        "key": "ori",
+        "label": "Objective Reliability Index",
+        "description": "How consistent you are in helping secure major objectives.",
+        "score": 34,
+        "scoreLabel": "Volatile",
+        "variant": "negative",
+        "narrative": {
+          "headline": "Objective setups are clean when vision is prepped.",
+          "body": "Dragon and Baron participation stay above cohort averages, but smite steals against you still slip through without ward denial."
+        },
+        "metrics": [
+          {
+            "id": "dragons",
+            "label": "Drake Participation",
+            "unit": "%",
+            "value": 0.78,
+            "displayValue": "78%",
+            "comparison": "+9% vs cohort",
+            "direction": "positive",
+            "percent": 0.78
+          },
+          {
+            "id": "barons",
+            "label": "Baron Participation",
+            "unit": "%",
+            "value": 0.64,
+            "displayValue": "64%",
+            "comparison": "+6% vs cohort",
+            "direction": "positive",
+            "percent": 0.64
+          },
+          {
+            "id": "steals",
+            "label": "Objectives Stolen Against",
+            "unit": "/game",
+            "value": 0.25,
+            "displayValue": "0.25",
+            "comparison": "-0.11 vs cohort",
+            "direction": "negative",
+            "percent": 0.31
+          }
+        ],
+        "trend": {
+          "label": "Objective tempo",
+          "series": [
+            {
+              "match": 16,
+              "minute": null,
+              "delta": 0.02,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 17,
+              "minute": null,
+              "delta": 0.04,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 18,
+              "minute": null,
+              "delta": 0.01,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 19,
+              "minute": null,
+              "delta": -0.05,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 20,
+              "minute": null,
+              "delta": 0.03,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Objective Damage",
+              "unit": "/10m",
+              "value": 1320
+            },
+            {
+              "label": "Epic Secured",
+              "unit": "/game",
+              "value": 1.2
+            },
+            {
+              "label": "Structures",
+              "unit": "/game",
+              "value": 0.9
+            }
+          ],
+          "focus": "Control wards placed before objectives: 3.4 per setup."
+        },
+        "chart": {
+          "type": "progress",
+          "series": [
+            {
+              "id": null,
+              "label": "Secure %",
+              "value": 0.82,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "Steal Prevention %",
+              "value": 0.69,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No objective events recorded in the selected matches."
+      },
+      {
+        "key": "sdi",
+        "label": "Survival Discipline Index",
+        "description": "Ability to minimize unnecessary deaths and adapt defensively.",
+        "score": 28,
+        "scoreLabel": "Volatile",
+        "variant": "negative",
+        "narrative": {
+          "headline": "Positional slips snowball when tempo breaks.",
+          "body": "Death share rises sharply after mid-game picks, signaling regroup timings should tighten once outer turrets fall."
+        },
+        "metrics": [
+          {
+            "id": "deaths",
+            "label": "Deaths / Game",
+            "unit": "",
+            "value": 5.75,
+            "displayValue": "5.8",
+            "comparison": "+0.8 vs cohort",
+            "direction": "negative",
+            "percent": 0.28125
+          },
+          {
+            "id": "damageTaken",
+            "label": "Damage Taken / Min",
+            "unit": "",
+            "value": 517.0,
+            "displayValue": "517",
+            "comparison": "+11% vs cohort",
+            "direction": "negative",
+            "percent": 0.71
+          },
+          {
+            "id": "heals",
+            "label": "Self Mitigation & Heals",
+            "unit": "/game",
+            "value": 9100.0,
+            "displayValue": "9.1k",
+            "comparison": "-6% vs cohort",
+            "direction": "negative",
+            "percent": 0.44
+          }
+        ],
+        "trend": {
+          "label": "Death clustering",
+          "series": [
+            {
+              "match": 11,
+              "minute": null,
+              "delta": 8.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 12,
+              "minute": null,
+              "delta": 6.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 13,
+              "minute": null,
+              "delta": 6.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 14,
+              "minute": null,
+              "delta": 4.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 15,
+              "minute": null,
+              "delta": 4.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 16,
+              "minute": null,
+              "delta": 3.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 17,
+              "minute": null,
+              "delta": 8.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 18,
+              "minute": null,
+              "delta": 9.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 19,
+              "minute": null,
+              "delta": 1.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 20,
+              "minute": null,
+              "delta": 7.0,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Shutdowns Given",
+              "unit": "/game",
+              "value": 0.4
+            },
+            {
+              "label": "Pre-15 Death Share",
+              "unit": "%",
+              "value": 0.63
+            },
+            {
+              "label": "CC Time",
+              "unit": "sec/game",
+              "value": 42
+            }
+          ],
+          "focus": "Deaths spike when regroup timers exceed 30 seconds after a pick."
+        },
+        "chart": {
+          "type": "histogram",
+          "series": [
+            {
+              "id": null,
+              "label": "0-2",
+              "value": 2.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "3-4",
+              "value": 5.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "5-6",
+              "value": 4.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": null,
+              "label": "7+",
+              "value": 9.0,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No defensive metrics available."
+      },
+      {
+        "key": "vai",
+        "label": "Vision & Awareness Index",
+        "description": "Tracks how you control vision and deny enemy information.",
+        "score": 62,
+        "scoreLabel": "Moderate",
+        "variant": "neutral",
+        "narrative": {
+          "headline": "Vision control drives objective reliability.",
+          "body": "You keep wards placed and killed above cohort averages; opportunity is expanding sweep timings around second herald."
+        },
+        "metrics": [
+          {
+            "id": "visionScore",
+            "label": "Vision Score / Min",
+            "unit": "",
+            "value": 1.3378130726939526,
+            "displayValue": "1.34",
+            "comparison": "+14% vs cohort",
+            "direction": "positive",
+            "percent": 0.8918753817959684
+          },
+          {
+            "id": "wardsCleared",
+            "label": "Wards Cleared / Game",
+            "unit": "",
+            "value": 6.75,
+            "displayValue": "6.8",
+            "comparison": "+1.1 vs cohort",
+            "direction": "positive",
+            "percent": 0.675
+          },
+          {
+            "id": "visionPerMin",
+            "label": "Control Wards Placed",
+            "unit": "/game",
+            "value": 3.5,
+            "displayValue": "3.5",
+            "comparison": "+0.7 vs cohort",
+            "direction": "positive",
+            "percent": 0.62
+          }
+        ],
+        "trend": {
+          "label": "Vision tempo",
+          "series": [
+            {
+              "match": null,
+              "minute": 10,
+              "delta": null,
+              "value": 0.9,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": 20,
+              "delta": null,
+              "value": 1.35,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": 30,
+              "delta": null,
+              "value": 1.48,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": 35,
+              "delta": null,
+              "value": 1.62,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Stealth Wards Placed",
+              "unit": "/game",
+              "value": 7.1
+            },
+            {
+              "label": "Control Wards Purchased",
+              "unit": "/game",
+              "value": 3.9
+            }
+          ],
+          "focus": "Vision denial before Baron occurs in 62% of setups."
+        },
+        "chart": {
+          "type": "line",
+          "series": [
+            {
+              "id": "yours",
+              "label": "You",
+              "value": null,
+              "points": [
+                {
+                  "match": null,
+                  "minute": 5,
+                  "delta": null,
+                  "value": 0.7,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 10,
+                  "delta": null,
+                  "value": 0.9,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 15,
+                  "delta": null,
+                  "value": 1.1,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 20,
+                  "delta": null,
+                  "value": 1.35,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 25,
+                  "delta": null,
+                  "value": 1.44,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 30,
+                  "delta": null,
+                  "value": 1.48,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                }
+              ],
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            },
+            {
+              "id": "cohort",
+              "label": "Cohort",
+              "value": null,
+              "points": [
+                {
+                  "match": null,
+                  "minute": 5,
+                  "delta": null,
+                  "value": 0.6,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 10,
+                  "delta": null,
+                  "value": 0.8,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 15,
+                  "delta": null,
+                  "value": 0.95,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 20,
+                  "delta": null,
+                  "value": 1.12,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 25,
+                  "delta": null,
+                  "value": 1.21,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": 30,
+                  "delta": null,
+                  "value": 1.28,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                }
+              ],
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No vision records found."
+      },
+      {
+        "key": "eui",
+        "label": "Economy Utilization Index",
+        "description": "Measures how efficiently you convert gold into map pressure.",
+        "score": 94,
+        "scoreLabel": "Efficient",
+        "variant": "positive",
+        "narrative": {
+          "headline": "Gold rarely sits idle.",
+          "body": "You convert item spikes into damage faster than the cohort. Late backs during losing streaks still delay third core spikes."
+        },
+        "metrics": [
+          {
+            "id": "gpm",
+            "label": "Gold / Min",
+            "unit": "",
+            "value": 471.10903762268737,
+            "displayValue": "471",
+            "comparison": "+9% vs cohort",
+            "direction": "positive",
+            "percent": 0.9422180752453747
+          },
+          {
+            "id": "spendLatency",
+            "label": "Spend Latency",
+            "unit": "sec",
+            "value": 48.0,
+            "displayValue": "48s",
+            "comparison": "-12s vs cohort",
+            "direction": "positive",
+            "percent": 0.64
+          },
+          {
+            "id": "damagePerGold",
+            "label": "Damage / 1k Gold",
+            "unit": "",
+            "value": 780.0,
+            "displayValue": "780",
+            "comparison": "+17% vs cohort",
+            "direction": "positive",
+            "percent": 0.79
+          }
+        ],
+        "trend": {
+          "label": "Item spike conversion",
+          "series": [
+            {
+              "match": 18,
+              "minute": null,
+              "delta": 0.08,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 19,
+              "minute": null,
+              "delta": 0.12,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 20,
+              "minute": null,
+              "delta": 0.09,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Gold Earned",
+              "unit": "/game",
+              "value": 12762
+            },
+            {
+              "label": "Unspent Gold on Death",
+              "unit": "",
+              "value": 215
+            }
+          ],
+          "focus": "Third item timing averages 23:40 when ahead, 26:05 when behind."
+        },
+        "chart": {
+          "type": "scatter",
+          "series": [
+            {
+              "id": null,
+              "label": "Conversion",
+              "value": null,
+              "points": [
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": 392.0,
+                  "y": 720.0,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": 405.0,
+                  "y": 750.0,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": 440.0,
+                  "y": 845.0,
+                  "axis": null
+                },
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": 458.0,
+                  "y": 870.0,
+                  "axis": null
+                }
+              ],
+              "labelX": "Gold / Min",
+              "labelY": "Damage / 1k Gold",
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "Economy data unavailable."
+      },
+      {
+        "key": "rsi",
+        "label": "Role Stability Index",
+        "description": "Measures consistency across secondary roles.",
+        "score": 66,
+        "scoreLabel": "Specialist",
+        "variant": "neutral",
+        "narrative": {
+          "headline": "Jungle and midline stabilize, other roles remain volatile.",
+          "body": "Secondary roles have lower win rate and KDA variance spikes; stay disciplined when swapping off comfort picks."
+        },
+        "metrics": [
+          {
+            "id": "jungleWinRate",
+            "label": "Jungle Win Rate",
+            "unit": "%",
+            "value": 0.42105263157894735,
+            "displayValue": "42%",
+            "comparison": "-6% vs cohort",
+            "direction": "negative",
+            "percent": 0.42105263157894735
+          },
+          {
+            "id": "WinRate",
+            "label": " Win Rate",
+            "unit": "%",
+            "value": 1.0,
+            "displayValue": "100%",
+            "comparison": "+7% vs cohort",
+            "direction": "positive",
+            "percent": 1.0
+          }
+        ],
+        "trend": {
+          "label": "Role variance",
+          "series": [
+            {
+              "match": null,
+              "minute": null,
+              "delta": null,
+              "value": 0.18,
+              "role": "JUNGLE",
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": null,
+              "delta": null,
+              "value": 0.32999999999999996,
+              "role": "",
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Unique Champions",
+              "unit": "",
+              "value": 13
+            },
+            {
+              "label": "Off-role Games",
+              "unit": "",
+              "value": 1
+            }
+          ],
+          "focus": "KDA variance spikes to 0.41 on top-adapt attempts."
+        },
+        "chart": {
+          "type": "radar",
+          "series": [
+            {
+              "id": null,
+              "label": "Win Rate",
+              "value": null,
+              "points": [
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": 0.42105263157894735,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": "JUNGLE"
+                },
+                {
+                  "match": null,
+                  "minute": null,
+                  "delta": null,
+                  "value": 1.0,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": null,
+                  "x": null,
+                  "y": null,
+                  "axis": ""
+                }
+              ],
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No cross-role games recorded."
+      },
+      {
+        "key": "mi",
+        "label": "Momentum Index",
+        "description": "Captures streak patterns \u2014 momentum and recovery.",
+        "score": 62,
+        "scoreLabel": "Streaky",
+        "variant": "neutral",
+        "narrative": {
+          "headline": "Momentum surges, but recovery climbs are slower.",
+          "body": "Two-win streaks convert into five-game claims, yet back-to-back losses extend to four without an intervention."
+        },
+        "metrics": [
+          {
+            "id": "maxWinStreak",
+            "label": "Max Claim Streak",
+            "unit": "games",
+            "value": 5.0,
+            "displayValue": "5",
+            "comparison": "+2 vs cohort",
+            "direction": "positive",
+            "percent": 0.8333333333333334
+          },
+          {
+            "id": "lossSpiral",
+            "label": "Avg Fall Streak",
+            "unit": "games",
+            "value": 2.75,
+            "displayValue": "2.8",
+            "comparison": "+0.8 vs cohort",
+            "direction": "neutral",
+            "percent": 0.3125
+          }
+        ],
+        "trend": {
+          "label": "Rolling momentum",
+          "series": [
+            {
+              "match": 11,
+              "minute": null,
+              "delta": null,
+              "value": 3.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 12,
+              "minute": null,
+              "delta": null,
+              "value": 2.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 13,
+              "minute": null,
+              "delta": null,
+              "value": 1.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 14,
+              "minute": null,
+              "delta": null,
+              "value": 0.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 15,
+              "minute": null,
+              "delta": null,
+              "value": -1.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 16,
+              "minute": null,
+              "delta": null,
+              "value": 0.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 17,
+              "minute": null,
+              "delta": null,
+              "value": -1.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 18,
+              "minute": null,
+              "delta": null,
+              "value": -2.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 19,
+              "minute": null,
+              "delta": null,
+              "value": -1.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": 20,
+              "minute": null,
+              "delta": null,
+              "value": -2.0,
+              "role": null,
+              "bucket": null,
+              "metric": null,
+              "low": null,
+              "mid": null,
+              "high": null,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Comeback Win Rate",
+              "unit": "%",
+              "value": 0.38
+            },
+            {
+              "label": "First Blood to Victory",
+              "unit": "%",
+              "value": 0.65
+            }
+          ],
+          "focus": "Momentum drops sharply after two losses\u2014reset routines needed to shorten slumps."
+        },
+        "chart": {
+          "type": "timeline",
+          "series": [
+            {
+              "id": null,
+              "label": "Results",
+              "value": null,
+              "points": [
+                {
+                  "match": 11,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 12,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 13,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 14,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 15,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 16,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "W",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 17,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 18,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 19,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "W",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                },
+                {
+                  "match": 20,
+                  "minute": null,
+                  "delta": null,
+                  "value": null,
+                  "role": null,
+                  "bucket": null,
+                  "metric": null,
+                  "low": null,
+                  "mid": null,
+                  "high": null,
+                  "result": "L",
+                  "x": null,
+                  "y": null,
+                  "axis": null
+                }
+              ],
+              "labelX": null,
+              "labelY": null,
+              "min": null,
+              "q1": null,
+              "median": null,
+              "q3": null,
+              "max": null
+            }
+          ]
+        },
+        "emptyCopy": "No streak data for this sample."
+      },
+      {
+        "key": "ci",
+        "label": "Composure Index",
+        "description": "Evaluates consistency between best & worst matches.",
+        "score": 0,
+        "scoreLabel": "High variance",
+        "variant": "negative",
+        "narrative": {
+          "headline": "Performance swings remain large.",
+          "body": "Top quartile games carry hard; bottom quartile drop-offs are equally deep\u2014focus on stabilizing baseline impact."
+        },
+        "metrics": [
+          {
+            "id": "kdaStdDev",
+            "label": "KDA Std Dev",
+            "unit": "",
+            "value": 4.570613323499211,
+            "displayValue": "4.57",
+            "comparison": "+0.7 vs cohort",
+            "direction": "negative",
+            "percent": 0.0
+          },
+          {
+            "id": "goldStdDev",
+            "label": "Gold Std Dev",
+            "unit": "",
+            "value": 2855.9855723504074,
+            "displayValue": "2.86k",
+            "comparison": "+240 vs cohort",
+            "direction": "negative",
+            "percent": 0.0
+          },
+          {
+            "id": "deathStdDev",
+            "label": "Deaths Std Dev",
+            "unit": "",
+            "value": 2.8996370008747827,
+            "displayValue": "2.9",
+            "comparison": "+0.4 vs cohort",
+            "direction": "negative",
+            "percent": 0.0
+          }
+        ],
+        "trend": {
+          "label": "Variance spread",
+          "series": [
+            {
+              "match": null,
+              "minute": null,
+              "delta": null,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": "KDA",
+              "low": 0.5,
+              "mid": 2.75,
+              "high": 17.0,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": null,
+              "delta": null,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": "Gold",
+              "low": 6510.0,
+              "mid": 12721.0,
+              "high": 20396.0,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            },
+            {
+              "match": null,
+              "minute": null,
+              "delta": null,
+              "value": null,
+              "role": null,
+              "bucket": null,
+              "metric": "Deaths",
+              "low": 0.0,
+              "mid": 6.0,
+              "high": 12.0,
+              "result": null,
+              "x": null,
+              "y": null,
+              "axis": null
+            }
+          ]
+        },
+        "telemetry": {
+          "samples": [
+            {
+              "label": "Best 5 Avg KDA",
+              "unit": "",
+              "value": 10.8
+            },
+            {
+              "label": "Worst 5 Avg KDA",
+              "unit": "",
+              "value": 1.0
+            }
+          ],
+          "focus": "Loss-side deaths surge to 6; tighten mid-fight exit calls to reduce variance."
+        },
+        "chart": {
+          "type": "boxplot",
+          "series": [
+            {
+              "id": null,
+              "label": "KDA",
+              "value": null,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": 0.5,
+              "q1": 1.625,
+              "median": 2.75,
+              "q3": 5.666666666666667,
+              "max": 17.0
+            },
+            {
+              "id": null,
+              "label": "Gold",
+              "value": null,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": 6510.0,
+              "q1": 11137.0,
+              "median": 12721.0,
+              "q3": 14609.0,
+              "max": 20396.0
+            },
+            {
+              "id": null,
+              "label": "Deaths",
+              "value": null,
+              "points": null,
+              "labelX": null,
+              "labelY": null,
+              "min": 0.0,
+              "q1": 4.0,
+              "median": 6.0,
+              "q3": 8.0,
+              "max": 12.0
+            }
+          ]
+        },
+        "emptyCopy": "Variance metrics unavailable for this window."
+      }
+    ],
+    "insights": [
+      "Economy Utilization Index is your strongest foundation\u2014gold rarely sits idle.",
+      "Composure Index needs attention\u2014performance swings remain large.",
+      "Solid core with room for growth\u2014focus on shoring up weak points."
+    ],
+    "generatedAt": "2025-11-10T06:37:05.122056Z"
+  }
+}
