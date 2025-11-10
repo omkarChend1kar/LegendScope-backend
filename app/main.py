@@ -28,7 +28,12 @@ def create_application() -> FastAPI:
     # Add CORS middleware to allow frontend requests
     app.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=r"http://localhost:\d+",  # Allow any localhost port
+        allow_origins=[
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:5173",  # Vite default
+            "https://main.d1hf5ka9zgg3di.amplifyapp.com",  # Production frontend
+        ],
         allow_credentials=True,
         allow_methods=["*"],  # Allow all HTTP methods
         allow_headers=["*"],  # Allow all headers
